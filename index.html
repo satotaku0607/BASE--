@@ -462,7 +462,13 @@ select{width:100%;height:32px;font-size:13px;border:1px solid #ccc;border-radius
 .sticky-action{position:sticky;bottom:calc(56px + var(--safe-bottom));width:100%;z-index:100;padding:8px 16px 10px;background:linear-gradient(to top,#fff 60%,rgba(255,255,255,0));pointer-events:none;}
 .sticky-action>*{pointer-events:auto;width:100%;}
 .action-bar{position:sticky;bottom:calc(56px + var(--safe-bottom));width:100%;z-index:100;padding:8px 16px 10px;background:linear-gradient(to top,#fff 60%,rgba(255,255,255,0));}
-/* padding-bottom managed by app-body */
+/* 全スクリーン：stickyボタン＋ボトムナビ分の余白 */
+#screen-main,#screen-detail,#screen-booking,#screen-booking-complete,
+#screen-apply,#screen-it-explain,#screen-contract,#screen-key-pickup,
+#screen-complete,#screen-progress,#screen-wallet,#screen-mypage,
+#screen-guarantee,#screen-survey{
+  padding-bottom:calc(140px + var(--safe-bottom)) !important;
+}
 
 @keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
 </style>
@@ -499,13 +505,107 @@ select{width:100%;height:32px;font-size:13px;border:1px solid #ccc;border-radius
   </div>
 
   <div class="app-body">
+  <!-- オンボーディング -->
+  <div id="screen-onboarding" style="display:block;position:fixed;inset:0;z-index:1000;background:#fff;overflow:hidden;">
+    <div style="max-width:430px;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;position:relative;">
+
+      <!-- ページ1 -->
+      <div id="ob0" style="display:flex;flex-direction:column;height:100%;position:absolute;inset:0;">
+        <!-- ヒーロー上部 -->
+        <div style="background:linear-gradient(160deg,#0AABCE 0%,#0887A8 60%,#065F7A 100%);flex-shrink:0;padding:48px 24px 32px;position:relative;overflow:hidden;">
+          <!-- 装飾円 -->
+          <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08);"></div>
+          <div style="position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.06);"></div>
+          <div style="position:relative;z-index:1;">
+            <div style="display:inline-block;background:rgba(255,255,255,.18);border-radius:12px;padding:6px 14px;font-size:12px;font-weight:600;color:#fff;letter-spacing:.5px;margin-bottom:14px;">BASEでできること 1/2</div>
+            <div style="font-size:26px;font-weight:800;color:#fff;line-height:1.3;margin-bottom:8px;">手続きも進捗管理も<br>全部スマホで完結</div>
+            <div style="font-size:14px;color:rgba(255,255,255,.8);line-height:1.5;">店舗に行く必要はもうありません</div>
+          </div>
+        </div>
+        <!-- カード2枚 -->
+        <div style="flex:1;padding:16px 16px 0;display:flex;flex-direction:column;gap:12px;overflow:hidden;">
+          <div style="background:#F0FBFD;border-radius:16px;padding:18px;display:flex;gap:14px;align-items:center;border:1.5px solid #B2EAF7;">
+            <div style="width:52px;height:52px;background:linear-gradient(135deg,#0AABCE,#0887A8);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+            </div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:#0887A8;margin-bottom:4px;">アプリ申込・契約</div>
+              <div style="font-size:13px;color:#444;line-height:1.55;">内見予約から申込・契約まで<br>すべてアプリで完結</div>
+            </div>
+          </div>
+          <div style="background:#F0FBFD;border-radius:16px;padding:18px;display:flex;gap:14px;align-items:center;border:1.5px solid #B2EAF7;">
+            <div style="width:52px;height:52px;background:linear-gradient(135deg,#29CCE8,#0AABCE);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:#0887A8;margin-bottom:4px;">進捗管理</div>
+              <div style="font-size:13px;color:#444;line-height:1.55;">物件ごとの手続き状況を<br>アプリでリアルタイム管理</div>
+            </div>
+          </div>
+        </div>
+        <!-- ドット＋ボタン -->
+        <div style="padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));">
+          <div style="display:flex;justify-content:center;gap:8px;margin-bottom:14px;">
+            <div id="obDot0" style="width:24px;height:8px;border-radius:4px;background:#0AABCE;transition:all .3s;"></div>
+            <div id="obDot1" style="width:8px;height:8px;border-radius:4px;background:#ddd;transition:all .3s;"></div>
+          </div>
+          <button id="obNextBtn" onclick="obNext()" style="width:100%;height:54px;background:linear-gradient(135deg,#0AABCE,#0887A8);border:none;border-radius:16px;color:#fff;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(10,171,206,.4);">次へ</button>
+          <button onclick="obSkip()" style="width:100%;height:40px;background:none;border:none;color:#bbb;font-size:14px;cursor:pointer;margin-top:4px;">スキップ</button>
+        </div>
+      </div>
+
+      <!-- ページ2 -->
+      <div id="ob1" style="display:none;flex-direction:column;height:100%;position:absolute;inset:0;">
+        <!-- ヒーロー上部 -->
+        <div style="background:linear-gradient(160deg,#0887A8 0%,#065F7A 60%,#044A60 100%);flex-shrink:0;padding:48px 24px 32px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08);"></div>
+          <div style="position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.06);"></div>
+          <div style="position:relative;z-index:1;">
+            <div style="display:inline-block;background:rgba(255,255,255,.18);border-radius:12px;padding:6px 14px;font-size:12px;font-weight:600;color:#fff;letter-spacing:.5px;margin-bottom:14px;">BASEでできること 2/2</div>
+            <div style="font-size:26px;font-weight:800;color:#fff;line-height:1.3;margin-bottom:8px;">支払いも審査も<br>もっとスマートに</div>
+            <div style="font-size:14px;color:rgba(255,255,255,.8);line-height:1.5;">お金まわりもBASEにお任せ</div>
+          </div>
+        </div>
+        <!-- カード2枚 -->
+        <div style="flex:1;padding:16px 16px 0;display:flex;flex-direction:column;gap:12px;overflow:hidden;">
+          <div style="background:#F0FBFD;border-radius:16px;padding:18px;display:flex;gap:14px;align-items:center;border:1.5px solid #B2EAF7;">
+            <div style="width:52px;height:52px;background:linear-gradient(135deg,#0AABCE,#0887A8);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><circle cx="17" cy="15" r="1.5" fill="white" stroke="none"/></svg>
+            </div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:#0887A8;margin-bottom:4px;">ウォレット機能</div>
+              <div style="font-size:13px;color:#444;line-height:1.55;">家賃のクレカ払いに対応。<br>支払い履歴もダッシュボードで管理</div>
+            </div>
+          </div>
+          <div style="background:#F0FBFD;border-radius:16px;padding:18px;display:flex;gap:14px;align-items:center;border:1.5px solid #B2EAF7;">
+            <div style="width:52px;height:52px;background:linear-gradient(135deg,#29CCE8,#0AABCE);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:#0887A8;margin-bottom:4px;">事前審査</div>
+              <div style="font-size:13px;color:#444;line-height:1.55;">保証会社の上限を先に確認。<br>安心して物件選びができます</div>
+            </div>
+          </div>
+        </div>
+        <!-- ドット＋ボタン -->
+        <div style="padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));">
+          <div style="display:flex;justify-content:center;gap:8px;margin-bottom:14px;">
+            <div id="obDot0b" style="width:8px;height:8px;border-radius:4px;background:#ddd;transition:all .3s;"></div>
+            <div id="obDot1b" style="width:24px;height:8px;border-radius:4px;background:#0AABCE;transition:all .3s;"></div>
+          </div>
+          <button onclick="obSkip()" style="width:100%;height:54px;background:linear-gradient(135deg,#0AABCE,#0887A8);border:none;border-radius:16px;color:#fff;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(10,171,206,.4);">はじめる</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
   <div id="screen-login" style="display:none;padding:0 16px;"></div>
-  <div id="screen-main" style="padding:0 16px;">
+  <div id="screen-main" style="display:block;padding:0 16px;">
     <div class="tabs">
       <div class="tab active" onclick="switchTab('search')">検索</div>
       <div class="tab" onclick="switchTab('fav')">お気に入り</div>
     </div>
-    <div id="tab-search">
+    <div id="tab-search" style="padding-bottom:160px;">
       <!-- エリア/駅切り替え -->
       <div class="search-mode-toggle">
         <button class="mode-btn active" onclick="switchMode('area')" id="modeArea">エリアから探す</button>
@@ -613,9 +713,20 @@ select{width:100%;height:32px;font-size:13px;border:1px solid #ccc;border-radius
     <svg class="bnav-icon" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
     <span class="bnav-label">マイページ</span>
   </div>
+  <div class="bnav-item" id="bnav-survey" onclick="bnav('survey')">
+    <svg class="bnav-icon" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+    <span class="bnav-label">アンケート</span>
+  </div>
 </div>
 
 <script>
+function scrollToTop(){
+  window.scrollTo(0,0);
+  document.documentElement.scrollTop=0;
+  document.body.scrollTop=0;
+  var ab=document.querySelector('.app-body');if(ab)ab.scrollTop=0;
+  var app=document.querySelector('.app');if(app)app.scrollTop=0;
+}
 // ===== 定数 =====
 const wards=["千代田区","中央区","港区","新宿区","文京区","台東区","墨田区","江東区","品川区","目黒区","大田区","世田谷区","渋谷区","中野区","杉並区","豊島区","北区","荒川区","板橋区","練馬区","足立区","葛飾区","江戸川区"];
 const lines=[
@@ -765,12 +876,32 @@ function updateHeaderUser(){
 }
 
 // ===== ALL SCREENS =====
-const ALL_SCREENS=['screen-login','screen-main','screen-guarantee','screen-detail','screen-booking','screen-booking-complete','screen-apply','screen-it-explain','screen-contract','screen-key-pickup','screen-complete','screen-progress','screen-wallet','screen-mypage'];
+
+// ===== オンボーディング =====
+var obIdx=0;
+function obNext(){
+  if(obIdx===0){
+    document.getElementById('ob0').style.display='none';
+    var p2=document.getElementById('ob1');
+    p2.style.display='flex';
+    obIdx=1;
+  } else {
+    obSkip();
+  }
+}
+function obSkip(){
+  var ob=document.getElementById('screen-onboarding');
+  if(ob) ob.style.display='none';
+  enterMain();
+}
+
+const ALL_SCREENS=['screen-login','screen-main','screen-guarantee','screen-detail','screen-booking','screen-booking-complete','screen-apply','screen-it-explain','screen-contract','screen-key-pickup','screen-complete','screen-progress','screen-wallet','screen-mypage','screen-survey'];
 function hideAll(){ALL_SCREENS.forEach(s=>document.getElementById(s).style.display='none');}
 
 // ===== ボトムナビ =====
 function bnav(tab){
   hideAll();
+  scrollToTop();
   document.getElementById('backBtn').classList.remove('show');
   screenStack=[];
   document.querySelectorAll('.bnav-item').forEach(el=>el.classList.remove('active'));
@@ -780,20 +911,28 @@ function bnav(tab){
   if(activeEl){activeEl.classList.add('active');activeEl.querySelector('.bnav-label').style.color='var(--red)';activeEl.querySelector('svg').setAttribute('stroke','#0AABCE');}
   window.scrollTo({top:0,behavior:"instant"});
   if(tab==='search'){
-    document.getElementById('screen-main').style.display='';
+    document.getElementById('screen-main').style.display='block';
     setTitle('BASE');
   } else if(tab==='progress'){
-    document.getElementById('screen-progress').style.display='';
+    document.getElementById('screen-progress').style.display='block';
     setTitle('進捗確認','');
     renderProgressScreen();
   } else if(tab==='wallet'){
-    document.getElementById('screen-wallet').style.display='';
+    document.getElementById('screen-wallet').style.display='block';
     setTitle('ウォレット','');
     renderWalletScreen();
   } else if(tab==='mypage'){
-    document.getElementById('screen-mypage').style.display='';
+    document.getElementById('screen-mypage').style.display='block';
     setTitle('マイページ','');
     renderMypageScreen();
+  } else if(tab==='survey'){
+    const surveyEl=document.getElementById('screen-survey');
+    if(surveyEl){
+      surveyEl.style.display='block';
+      surveyEl.style.visibility='visible';
+    }
+    setTitle('アンケート','');
+    setTimeout(function(){svRenderMSForm();},20);
   }
   updateHeaderUser();
 }
@@ -802,7 +941,7 @@ function bnav(tab){
 function pushScreen(id,title){
   screenStack.push(id);
   hideAll();
-  document.getElementById(id).style.display='';
+  document.getElementById(id).style.display='block';
   document.getElementById('backBtn').classList.add('show');
   setTitle(title,'');
   updateHeaderUser();
@@ -813,7 +952,8 @@ function goBack(){
   const prev=screenStack[screenStack.length-1];
   hideAll();
   if(!prev){bnav('search');return;}
-  document.getElementById(prev).style.display='';
+  document.getElementById(prev).style.display='block';
+  scrollToTop();
   const t={
     'screen-detail':'物件詳細','screen-booking':'内見予約',
     'screen-booking-complete':'予約完了','screen-apply':'入居申込','screen-it-explain':'IT重要事項説明','screen-contract':'契約手続','screen-key-pickup':'鍵の受け取り予約',
@@ -863,13 +1003,17 @@ function doApplyLogin(){
   applyAutoFill();
 }
 function enterMain(){
+  // screen-main 以外を全部非表示にする（hideAll は使わない）
+  ALL_SCREENS.filter(s=>s!=='screen-main').forEach(s=>{
+    const el=document.getElementById(s);
+    if(el) el.style.display='none';
+  });
+  document.getElementById('screen-main').style.display='block';
   try{
     document.getElementById('bottomNav').classList.add('show');
     renderGuaranteeFilter();
     renderAreaGrid();
   } catch(e){}
-  hideAll();
-  document.getElementById('screen-main').style.display='';
   setTitle('BASE');
   document.getElementById('backBtn').classList.remove('show');
   screenStack=[];
@@ -2113,7 +2257,7 @@ function doSearch(){
   // 駅徒歩スライダー
   const wMin=document.getElementById('walkMin'),wMax=document.getElementById('walkMax');
   if(wMin&&wMax){const mn=parseInt(wMin.value),mx=parseInt(wMax.value);if(mn>0||mx<5){list=list.filter(p=>p.walk>=WALK_STEPS[mn]&&p.walk<=WALK_STEPS[mx]);}}
-  document.getElementById('resultsArea').style.display='';
+  document.getElementById('resultsArea').style.display='block';
   // 検索ボタン→絞り込みボタンに切替
   const sb=document.getElementById('stickySearchBtn');
   if(sb) sb.innerHTML='<button onclick="openFilterSheet()" style="width:100%;height:52px;font-size:13px;font-weight:700;background:#fff;color:var(--red);border:1.5px solid var(--red);border-radius:12px;cursor:pointer;">絞り込み条件を変更</button>';
@@ -2127,8 +2271,185 @@ function renderCard(p){const isFav=favIds.has(p.id),isCompared=compareIds.has(p.
 function renderCards(list){document.getElementById('resultCount').textContent=`${list.length}件の物件`;document.getElementById('cardList').innerHTML=list.length>0?list.map(p=>renderCard(p)).join(''):'<div class="fav-empty">条件に合う物件が見つかりませんでした</div>';}
 function renderFavs(){const list=properties.filter(p=>favIds.has(p.id));document.getElementById('favList').innerHTML=list.length===0?'<div class="fav-empty">お気に入りはまだありません</div>':list.map(p=>renderCard(p)).join('');}
 
-// 起動
-enterMain();
+
+// ===== アンケート（JS描画） =====
+var svA={q1:0,q2:'',q3:'',q4:[],q5:''};
+var svDone=false;
+var svLbs=['','使いにくい','やや使いにくい','普通','使いやすい','とても使いやすい'];
+
+function svRenderMSForm(){
+  var el=document.getElementById('screen-survey');
+  if(!el)return;
+  el.innerHTML=
+    '<div style="padding:16px 16px 100px;">'
+    +'<div style="background:linear-gradient(135deg,#0AABCE,#0887A8);border-radius:16px;padding:24px 20px;margin-bottom:20px;text-align:center;">'
+    +'<div style="font-size:36px;margin-bottom:8px;">📋</div>'
+    +'<div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;">体験アンケート</div>'
+    +'<div style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.5;">BASEアプリのUI・使い勝手について<br>ご意見をお聞かせください。約1分</div>'
+    +'</div>'
+    +'<div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:14px;overflow:hidden;margin-bottom:16px;">'
+    +'<iframe src="https://forms.cloud.microsoft/r/UQxRzwWNp3" width="100%" height="900" frameborder="0" style="display:block;border:none;">読み込み中...</iframe>'
+    +'</div>'
+    +'<div style="text-align:center;padding-top:8px;border-top:1px solid #f0f0f0;">'
+    +'<button onclick="svAdminCSV()" style="background:none;border:1px solid #ccc;border-radius:8px;font-size:12px;color:#aaa;cursor:pointer;padding:8px 16px;">🔐 管理者：ローカルデータをCSVで出力</button>'
+    +'</div>'
+    +'</div>';
+}
+function svRender(){
+  var el=document.getElementById('screen-survey');
+  if(!el)return;
+  if(svDone){svRenderDone(el);return;}
+  el.innerHTML='<div style="padding:16px 16px 100px;">'
+    +'<div style="background:linear-gradient(135deg,#0AABCE,#0887A8);border-radius:16px;padding:24px 20px;margin-bottom:20px;text-align:center;">'
+    +'<div style="font-size:36px;margin-bottom:8px;">📋</div>'
+    +'<div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;">体験アンケート</div>'
+    +'<div style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.5;">BASEアプリのUI・使い勝手について<br>ご意見をお聞かせください。約1分</div>'
+    +'</div>'
+    +'<div style="height:5px;background:#e8e8e8;border-radius:3px;margin-bottom:20px;"><div id="svProg" style="height:100%;background:linear-gradient(90deg,#0AABCE,#29CCE8);border-radius:3px;width:0%;transition:width .3s;"></div></div>'
+    +svCard('Q1','※必須','全体的な使いやすさを教えてください',
+        '<div style="display:flex;gap:10px;justify-content:center;margin-bottom:8px;">'
+        +[1,2,3,4,5].map(function(n){return '<span id="svS'+n+'" onclick="svStar('+n+')" style="font-size:34px;cursor:pointer;filter:grayscale(1) opacity(.3);">⭐</span>';}).join('')
+        +'</div><div id="svSL" style="text-align:center;font-size:13px;color:#aaa;">タップして評価</div>'
+    )
+    +svOptCard('Q2','q2','※必須','デザイン・見た目の印象はいかがでしたか？',['とても良い','良い','普通','改善が必要'],false)
+    +svOptCard('Q3','q3','※必須','物件検索機能はわかりやすかったですか？',['とてもわかりやすい','わかりやすい','少し迷った','わかりにくい'],false)
+    +svOptCard('Q4','q4','複数選択可','特に良かった機能を教えてください',['物件検索','物件詳細','内見予約','申込フロー','カード・ウォレット','進捗確認'],true)
+    +svOptCard('Q5','q5','※必須','このアプリを友人・知人に勧めたいと思いますか？',['ぜひ勧めたい','勧めると思う','わからない','勧めない'],false)
+    +svCard('Q6','任意','改善してほしい点・ご意見があればお聞かせください',
+        '<textarea id="svQ6" placeholder="自由にご記入ください" style="width:100%;min-height:90px;border:1.5px solid #ddd;border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;resize:none;outline:none;box-sizing:border-box;"></textarea>'
+    )
+    +'<button onclick="svSubmit()" style="display:block;width:100%;height:52px;background:linear-gradient(135deg,#0AABCE,#0887A8);border:none;border-radius:14px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:12px;">回答を送信する</button>'
+    +'<div style="text-align:center;font-size:12px;color:#aaa;margin-bottom:24px;">回答はブラウザ内に保存されます</div>'
+    +'<div style="text-align:center;margin-bottom:32px;padding-top:8px;border-top:1px solid #f0f0f0;"><button onclick="svAdminCSV()" style="background:none;border:1px solid #ccc;border-radius:8px;font-size:12px;color:#aaa;cursor:pointer;padding:8px 16px;">🔐 管理者：回答データをCSVで出力</button></div>'
+    +'</div>';
+  if(svA.q1)svStar(svA.q1);
+  ['q2','q3','q5'].forEach(function(k){if(svA[k])svPick(k,svA[k]);});
+  svA.q4.forEach(function(v){svCheckVal(v);});
+}
+function svCard(qnum,req,qtxt,body){
+  return '<div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:14px;padding:18px;margin-bottom:14px;">'
+    +'<div style="font-size:11px;font-weight:700;color:#0AABCE;margin-bottom:4px;">'+qnum+' '+req+'</div>'
+    +'<div style="font-size:15px;font-weight:600;color:#1a1a1a;margin-bottom:14px;line-height:1.5;">'+qtxt+'</div>'
+    +body+'</div>';
+}
+function svOptCard(qnum,key,req,qtxt,opts,multi){
+  var items=opts.map(function(o){
+    var icon=multi
+      ?'<div class="svBox" data-key="'+key+'" data-v="'+o+'" style="width:18px;height:18px;border-radius:4px;border:2px solid #ccc;flex-shrink:0;font-size:11px;color:#fff;display:flex;align-items:center;justify-content:center;"></div>'
+      :'<div class="svDot" data-key="'+key+'" data-v="'+o+'" style="width:18px;height:18px;border-radius:50%;border:2px solid #ccc;flex-shrink:0;"></div>';
+    var fn=multi?"svCheck('"+key+"','"+o+"')":"svPick('"+key+"','"+o+"')";
+    return '<div onclick="'+fn+'" data-key="'+key+'" data-v="'+o+'" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:14px;color:#333;background:#fafafa;cursor:pointer;margin-bottom:8px;">'+icon+o+'</div>';
+  }).join('');
+  return svCard(qnum,req,qtxt,items);
+}
+function svRenderDone(el){
+  el.innerHTML='<div style="text-align:center;padding:60px 24px 100px;">'
+    +'<div style="font-size:64px;margin-bottom:20px;">🎉</div>'
+    +'<div style="font-size:22px;font-weight:700;color:#0AABCE;margin-bottom:10px;">ありがとうございました！</div>'
+    +'<p style="font-size:14px;color:#666;line-height:1.7;margin-bottom:28px;">いただいたフィードバックをもとに<br>さらに良いアプリを作っていきます。</p>'
+    ''
+    +'<button onclick="svResetAll()" style="background:none;border:1px solid #ddd;border-radius:10px;padding:11px 22px;font-size:13px;color:#888;cursor:pointer;">もう一度回答する</button>'
+    +'</div>';
+}
+function svStar(n){
+  svA.q1=n;
+  for(var i=1;i<=5;i++){var s=document.getElementById('svS'+i);if(s)s.style.filter=i<=n?'none':'grayscale(1) opacity(.3)';}
+  var l=document.getElementById('svSL');if(l){l.textContent=svLbs[n];l.style.color='#0AABCE';l.style.fontWeight='600';}
+  svProg();
+}
+function svPick(key,val){
+  if(svA[key]===val){ svA[key]=''; } else { svA[key]=val; }
+  var cur=svA[key];
+  document.querySelectorAll('[data-key="'+key+'"]').forEach(function(el){
+    var on=(cur!=='' && el.dataset.v===cur);
+    el.style.borderColor=on?'#0AABCE':'#e0e0e0';
+    el.style.background=on?'#E0F7FC':'#fafafa';
+    el.style.color=on?'#0887A8':'#333';
+    el.style.fontWeight=on?'600':'400';
+    var d=el.querySelector('.svDot');
+    if(d){
+      if(on){
+        d.style.borderColor='#0AABCE';
+        d.style.background='#0AABCE';
+        d.style.boxShadow='inset 0 0 0 4px #fff';
+      } else {
+        d.style.borderColor='#ccc';
+        d.style.background='transparent';
+        d.style.boxShadow='none';
+      }
+    }
+  });
+  svProg();
+}
+function svCheck(key,val){
+  var i=svA[key].indexOf(val);
+  if(i>=0)svA[key].splice(i,1);else svA[key].push(val);
+  svCheckVal(val);
+}
+function svCheckVal(val){
+  document.querySelectorAll('[data-key="q4"]').forEach(function(el){
+    var on=svA.q4.indexOf(el.dataset.v)>=0;
+    el.style.borderColor=on?'#0AABCE':'#e0e0e0';
+    el.style.background=on?'#E0F7FC':'#fafafa';
+    el.style.color=on?'#0887A8':'#333';
+    var b=el.querySelector('.svBox');if(b){b.style.borderColor=on?'#0AABCE':'#ccc';b.style.background=on?'#0AABCE':'transparent';b.textContent=on?'✓':'';}
+  });
+}
+function svProg(){
+  var n=0;if(svA.q1)n++;if(svA.q2)n++;if(svA.q3)n++;if(svA.q5)n++;
+  var b=document.getElementById('svProg');if(b)b.style.width=(n/4*100)+'%';
+}
+function svAlert(msg){
+  var ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  var bx=document.createElement('div');
+  bx.style.cssText='background:#fff;border-radius:16px;padding:28px 22px;max-width:300px;width:88%;text-align:center;';
+  bx.innerHTML='<div style="font-size:16px;font-weight:700;margin-bottom:10px;">⚠️ 未回答の項目があります</div>'
+    +'<p style="font-size:14px;color:#555;line-height:1.6;margin-bottom:20px;">'+msg+'</p>'
+    +'<button style="width:100%;height:46px;background:#0AABCE;border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;">回答する</button>';
+  bx.querySelector('button').onclick=function(){document.body.removeChild(ov);};
+  ov.appendChild(bx);document.body.appendChild(ov);
+}
+function svSubmit(){
+  if(!svA.q1){svAlert('Q1：使いやすさの評価が未回答です。★をタップして評価してください。');return;}
+  if(!svA.q2){svAlert('Q2：デザインの評価が未回答です。選択肢をタップしてください。');return;}
+  if(!svA.q3){svAlert('Q3：検索機能の評価が未回答です。選択肢をタップしてください。');return;}
+  if(!svA.q5){svAlert('Q5：推薦意向が未回答です。選択肢をタップしてください。');return;}
+  var ta=document.getElementById('svQ6');
+  var rec={日時:new Date().toLocaleString('ja-JP'),Q1_使いやすさ:svA.q1+'★',Q2_デザイン:svA.q2,Q3_検索機能:svA.q3,Q4_良かった機能:svA.q4.join('・')||'なし',Q5_推薦意向:svA.q5,Q6_自由記述:ta?ta.value:''};
+  var all=[];try{all=JSON.parse(localStorage.getItem('BASE_sv')||'[]');}catch(e){}
+  all.push(rec);try{localStorage.setItem('BASE_sv',JSON.stringify(all));}catch(e){}
+  svDone=true;
+  var el=document.getElementById('screen-survey');if(el)svRenderDone(el);
+  if(typeof scrollToTop==='function')scrollToTop();
+}
+function svAdminCSV(){
+  var pw=prompt('管理者パスワードを入力してください');
+  if(pw!=='base2024'){alert('パスワードが違います');return;}
+  svCSV();
+}
+function svCSV(){
+  var rows=[];try{rows=JSON.parse(localStorage.getItem('BASE_sv')||'[]');}catch(e){}
+  if(!rows.length){alert('回答データがありません');return;}
+  var h=Object.keys(rows[0]);
+  var csv=[h.join(',')].concat(rows.map(function(r){return h.map(function(k){return '"'+String(r[k]||'').replace(/"/g,'""')+'"';}).join(',');})).join('\n');
+  var blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;a.download='BASE_survey_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+function svResetAll(){
+  svA={q1:0,q2:'',q3:'',q4:[],q5:''};
+  svDone=false;
+  var el=document.getElementById('screen-survey');
+  if(el){
+    el.innerHTML='<div id="sv-loading"></div>';
+    setTimeout(function(){svRender();},10);
+  }
+  if(typeof scrollToTop==='function')scrollToTop();
+}
+
+// 起動：オンボーディング自動表示
 </script>
 <!-- ボトムシートオーバーレイ -->
 <div class="bottom-sheet-overlay" id="filterSheetOverlay" onclick="closeFilterSheet()"></div>
@@ -2250,6 +2571,190 @@ function updateConditionSummary(){
   },{passive:true});
   sheet.addEventListener('touchend',()=>{isDragging=false;},{passive:true});
 })();
+</script>
+
+<div id="screen-survey" style="display:none;padding:0;">
+  <div class="survey-wrap" id="surveyFormWrap">
+    <div class="survey-hero">
+      <div class="survey-hero-icon">📋</div>
+      <h2>体験アンケート</h2>
+      <p>BASEアプリのUI・使い勝手についてご意見をお聞かせください。所要時間：約1分</p>
+    </div>
+    <div class="survey-progress"><div class="survey-progress-bar" id="surveyProgressBar" style="width:0%"></div></div>
+
+    <!-- Q1 -->
+    <div class="survey-card">
+      <div class="survey-q-num">Q1</div>
+      <div class="survey-q-text">全体的な使いやすさを教えてください</div>
+      <div class="survey-rating" id="q1_rating">
+        <span class="survey-star" onclick="setRating(1)" data-v="1">⭐</span>
+        <span class="survey-star" onclick="setRating(2)" data-v="2">⭐</span>
+        <span class="survey-star" onclick="setRating(3)" data-v="3">⭐</span>
+        <span class="survey-star" onclick="setRating(4)" data-v="4">⭐</span>
+        <span class="survey-star" onclick="setRating(5)" data-v="5">⭐</span>
+      </div>
+      <div id="q1_label" style="text-align:center;font-size:12px;color:#aaa;margin-top:8px;">タップして評価</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="survey-card">
+      <div class="survey-q-num">Q2</div>
+      <div class="survey-q-text">デザイン・見た目の印象はいかがでしたか？</div>
+      <div class="survey-options" id="q2_opts">
+        <div class="survey-opt" onclick="selectOpt('q2','とても良い')"><div class="survey-opt-radio"></div>とても良い</div>
+        <div class="survey-opt" onclick="selectOpt('q2','良い')"><div class="survey-opt-radio"></div>良い</div>
+        <div class="survey-opt" onclick="selectOpt('q2','普通')"><div class="survey-opt-radio"></div>普通</div>
+        <div class="survey-opt" onclick="selectOpt('q2','改善が必要')"><div class="survey-opt-radio"></div>改善が必要</div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="survey-card">
+      <div class="survey-q-num">Q3</div>
+      <div class="survey-q-text">物件検索機能はわかりやすかったですか？</div>
+      <div class="survey-options" id="q3_opts">
+        <div class="survey-opt" onclick="selectOpt('q3','とてもわかりやすい')"><div class="survey-opt-radio"></div>とてもわかりやすい</div>
+        <div class="survey-opt" onclick="selectOpt('q3','わかりやすい')"><div class="survey-opt-radio"></div>わかりやすい</div>
+        <div class="survey-opt" onclick="selectOpt('q3','少し迷った')"><div class="survey-opt-radio"></div>少し迷った</div>
+        <div class="survey-opt" onclick="selectOpt('q3','わかりにくい')"><div class="survey-opt-radio"></div>わかりにくい</div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="survey-card">
+      <div class="survey-q-num">Q4</div>
+      <div class="survey-q-text">特に良かった機能を教えてください（複数選択可）</div>
+      <div class="survey-options" id="q4_opts">
+        <div class="survey-opt" onclick="toggleMulti('q4',this,'物件検索')"><div class="survey-opt-radio" style="border-radius:4px;"></div>物件検索</div>
+        <div class="survey-opt" onclick="toggleMulti('q4',this,'物件詳細')"><div class="survey-opt-radio" style="border-radius:4px;"></div>物件詳細</div>
+        <div class="survey-opt" onclick="toggleMulti('q4',this,'内見予約')"><div class="survey-opt-radio" style="border-radius:4px;"></div>内見予約</div>
+        <div class="survey-opt" onclick="toggleMulti('q4',this,'申込フロー')"><div class="survey-opt-radio" style="border-radius:4px;"></div>申込フロー</div>
+        <div class="survey-opt" onclick="toggleMulti('q4',this,'カード・ウォレット')"><div class="survey-opt-radio" style="border-radius:4px;"></div>カード・ウォレット</div>
+        <div class="survey-opt" onclick="toggleMulti('q4',this,'進捗確認')"><div class="survey-opt-radio" style="border-radius:4px;"></div>進捗確認</div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="survey-card">
+      <div class="survey-q-num">Q5</div>
+      <div class="survey-q-text">このアプリを友人・知人に勧めたいと思いますか？</div>
+      <div class="survey-options" id="q5_opts">
+        <div class="survey-opt" onclick="selectOpt('q5','ぜひ勧めたい')"><div class="survey-opt-radio"></div>ぜひ勧めたい</div>
+        <div class="survey-opt" onclick="selectOpt('q5','勧めると思う')"><div class="survey-opt-radio"></div>勧めると思う</div>
+        <div class="survey-opt" onclick="selectOpt('q5','わからない')"><div class="survey-opt-radio"></div>わからない</div>
+        <div class="survey-opt" onclick="selectOpt('q5','勧めない')"><div class="survey-opt-radio"></div>勧めない</div>
+      </div>
+    </div>
+
+    <!-- Q6 自由記述 -->
+    <div class="survey-card">
+      <div class="survey-q-num">Q6</div>
+      <div class="survey-q-text">改善してほしい点・ご意見があればお聞かせください</div>
+      <textarea class="survey-textarea" id="q6_text" placeholder="自由にご記入ください（任意）"></textarea>
+    </div>
+
+    <button class="survey-submit" id="surveySubmitBtn" onclick="submitSurvey()">回答を送信する</button>
+    <div class="survey-note">回答はブラウザ内に保存されます。CSVでダウンロードできます。</div>
+  </div>
+
+  <!-- 完了画面 -->
+  <div class="survey-complete" id="surveyCompletWrap" style="display:none;">
+    <div class="survey-complete-icon">✅</div>
+    <h3>ご回答ありがとうございました！</h3>
+    <p>いただいたフィードバックをもとに<br>さらに良いアプリを作っていきます。</p>
+    <button class="survey-csv-btn" onclick="downloadCSV()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      CSVでダウンロード
+    </button>
+    <div style="margin-top:16px;">
+      <button onclick="resetSurvey()" style="background:none;border:1px solid #ddd;border-radius:10px;padding:10px 20px;font-size:13px;color:#888;cursor:pointer;">もう一度回答する</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== アンケート =====
+const surveyAnswers = {q1:null,q2:null,q3:null,q4:[],q5:null,q6:''};
+let allResponses = JSON.parse(localStorage.getItem('surveyResponses')||'[]');
+
+function setRating(v){
+  surveyAnswers.q1=v;
+  const stars=document.querySelectorAll('#q1_rating .survey-star');
+  stars.forEach((s,i)=>s.classList.toggle('active',i<v));
+  const labels=['','使いにくい','やや使いにくい','普通','使いやすい','とても使いやすい'];
+  document.getElementById('q1_label').textContent=labels[v];
+  document.getElementById('q1_label').style.color='#0AABCE';
+  updateProgress();
+}
+function selectOpt(qKey,val){
+  surveyAnswers[qKey]=val;
+  const opts=document.querySelectorAll('#'+qKey+'_opts .survey-opt');
+  opts.forEach(el=>{
+    const isMatch=el.textContent.trim()===val;
+    el.classList.toggle('selected',isMatch);
+  });
+  updateProgress();
+}
+function toggleMulti(qKey,el,val){
+  const arr=surveyAnswers[qKey];
+  const idx=arr.indexOf(val);
+  if(idx>=0){arr.splice(idx,1);el.classList.remove('selected');}
+  else{arr.push(val);el.classList.add('selected');}
+  updateProgress();
+}
+function updateProgress(){
+  const total=5;
+  let done=0;
+  if(surveyAnswers.q1)done++;
+  if(surveyAnswers.q2)done++;
+  if(surveyAnswers.q3)done++;
+  if(surveyAnswers.q4.length)done++;
+  if(surveyAnswers.q5)done++;
+  document.getElementById('surveyProgressBar').style.width=(done/total*100)+'%';
+}
+function submitSurvey(){
+  if(!surveyAnswers.q1){alert('Q1：使いやすさの評価が空白です');return;}
+  if(!surveyAnswers.q2){alert('Q2：デザインの評価が空白です');return;}
+  if(!surveyAnswers.q3){alert('Q3：検索機能の評価が空白です');return;}
+  if(!surveyAnswers.q5){alert('Q5：推薦意向が空白です');return;}
+  surveyAnswers.q6=document.getElementById('q6_text').value;
+  const record={
+    timestamp:new Date().toLocaleString('ja-JP'),
+    q1_使いやすさ:surveyAnswers.q1+'★',
+    q2_デザイン:surveyAnswers.q2,
+    q3_検索機能:surveyAnswers.q3,
+    q4_良かった機能:surveyAnswers.q4.join('・'),
+    q5_推薦意向:surveyAnswers.q5,
+    q6_自由記述:surveyAnswers.q6,
+  };
+  allResponses.push(record);
+  try{localStorage.setItem('surveyResponses',JSON.stringify(allResponses));}catch(e){}
+  document.getElementById('surveyFormWrap').style.display='none';
+  document.getElementById('surveyCompletWrap').style.display='';
+}
+function downloadCSV(){
+  const rows=JSON.parse(localStorage.getItem('surveyResponses')||'[]');
+  if(!rows.length){alert('回答データがありません');return;}
+  const headers=Object.keys(rows[0]);
+  const csv=[headers.join(','),...rows.map(r=>headers.map(h=>'"'+(r[h]||'').replace(/"/g,'""')+'"').join(','))].join('\n');
+  const bom='\uFEFF';
+  const blob=new Blob([bom+csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='BASE_survey_'+ new Date().toISOString().slice(0,10)+'.csv';
+  a.click();URL.revokeObjectURL(url);
+}
+function resetSurvey(){
+  surveyAnswers.q1=null;surveyAnswers.q2=null;surveyAnswers.q3=null;surveyAnswers.q4=[];surveyAnswers.q5=null;surveyAnswers.q6='';
+  document.querySelectorAll('.survey-opt').forEach(el=>el.classList.remove('selected'));
+  document.querySelectorAll('.survey-star').forEach(el=>el.classList.remove('active'));
+  document.getElementById('q1_label').textContent='タップして評価';
+  document.getElementById('q1_label').style.color='#aaa';
+  document.getElementById('q6_text').value='';
+  document.getElementById('surveyProgressBar').style.width='0%';
+  document.getElementById('surveyFormWrap').style.display='';
+  document.getElementById('surveyCompletWrap').style.display='none';
+}
 </script>
 </body>
 </html>
